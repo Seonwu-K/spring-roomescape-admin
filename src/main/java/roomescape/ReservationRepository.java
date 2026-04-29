@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface ReservationRepository {
     List<Reservation> read();
-    void removeById(long id);
-    void create(ReservationCreateReqDto reqBody);
+    void delete(long id);
+    Reservation create(ReservationCreateReqDto reqBody);
 }

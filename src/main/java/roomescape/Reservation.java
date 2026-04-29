@@ -9,14 +9,18 @@ public class Reservation {
     private LocalDate date;
     private LocalTime time;
 
-    public Reservation(long id, ReservationCreateReqDto reqBody) {
+    public Reservation(long id, String name, LocalDate date, LocalTime time) {
         this.id = id;
-        this.name = reqBody.name();
-        this.date = reqBody.date();
-        this.time = reqBody.time();
+        this.name = name;
+        this.date = date;
+        this.time = time;
     }
 
     public boolean isEqualTo(long id) {
         return this.id == id;
+    }
+
+    public long getId() {
+        return this.id;
     }
 }

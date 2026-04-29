@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MemoryReservationRepository implements ReservationRepository {
     List<Reservation> reservations = new ArrayList<>();
-    private AtomicLong index = new AtomicLong(1);
+    private AtomicLong index = new AtomicLong(0);
 
 
     @Override
@@ -15,13 +15,24 @@ public class MemoryReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public void removeById(long id) {
+    public void delete(long id) {
+        Reservation reservation = reservations.stream()
+                .filter(it -> it.isEqualTo(id))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
 
+        reservations.remove(reservation);
     }
 
     @Override
-    public void create(ReservationCreateReqDto reqBody) {
-        Reservation reservation = new Reservation(index.incrementAndGet(), reqBody);
-        reservations.add(reservation);
+    public Reservation create(ReservationCreateReqDto reqBody) {
+        Reservation newReservation = new Reservation(
+                index.incrementAndGet(),
+                reqBody.name(),
+                reqBody.date(),
+                reqBody.time()
+            );
+        reservations.add(newReservation);
+        return newReservation;
     }
 }
