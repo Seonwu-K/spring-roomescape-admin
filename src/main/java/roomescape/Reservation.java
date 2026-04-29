@@ -9,6 +9,9 @@ public class Reservation {
     private LocalDate date;
     private LocalTime time;
 
+    public Reservation() {
+    }
+
     public Reservation(long id, String name, LocalDate date, LocalTime time) {
         validateName(name);
         this.id = id;
@@ -29,5 +32,17 @@ public class Reservation {
 
     public long getId() {
         return this.id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public LocalDate getDate() {
+        return this.date;
+    }
+
+    public LocalTime getTime() {
+        return this.time;
     }
 }

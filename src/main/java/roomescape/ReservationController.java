@@ -3,7 +3,7 @@ package roomescape;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class ReservationController {
-    private final ReservationRepository reservationRepository = new MemoryReservationRepository();
+    private final ReservationRepository reservationRepository;
+
+    public ReservationController(final ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
 
     @GetMapping("/reservations")
     public ResponseEntity<List<Reservation>> read() {
