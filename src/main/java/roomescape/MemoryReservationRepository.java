@@ -25,12 +25,13 @@ public class MemoryReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public Reservation create(ReservationCreateReqDto reqBody) {
+    public Reservation create(ReservationCreateReqDto reservationRequest
+    ) {
         Reservation newReservation = new Reservation(
                 index.incrementAndGet(),
-                reqBody.name(),
-                reqBody.date(),
-                reqBody.time()
+                reservationRequest.name(),
+                reservationRequest.date(),
+                reservationRequest.time()
             );
         reservations.add(newReservation);
         return newReservation;

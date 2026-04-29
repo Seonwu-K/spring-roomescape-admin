@@ -22,9 +22,9 @@ public class ReservationController {
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity<Map<String, Long>> create(@RequestBody ReservationCreateReqDto reqBody) {
+    public ResponseEntity<Map<String, Long>> create(@RequestBody ReservationCreateReqDto reservationRequest) {
 
-        Reservation newReservation = reservationRepository.create(reqBody);
+        Reservation newReservation = reservationRepository.create(reservationRequest);
 
         Map<String, Long> response = Map.of("id", newReservation.getId());
 
