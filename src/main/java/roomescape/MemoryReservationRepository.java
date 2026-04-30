@@ -15,6 +15,14 @@ public class MemoryReservationRepository implements ReservationRepository {
     }
 
     @Override
+    public Reservation findById(final long id) {
+        return reservations.stream()
+                .filter(it -> it.isEqualTo(id))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+    }
+
+    @Override
     public void delete(long id) {
         Reservation reservation = reservations.stream()
                 .filter(it -> it.isEqualTo(id))
@@ -31,8 +39,8 @@ public class MemoryReservationRepository implements ReservationRepository {
                 index.incrementAndGet(),
                 reservationRequest.name(),
                 reservationRequest.date(),
-                reservationRequest.time()
-            );
+                new ReservationTime(reservationRequest.timeId(), null)
+        );
         reservations.add(newReservation);
         return newReservation;
     }
