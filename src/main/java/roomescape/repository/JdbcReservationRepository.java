@@ -5,13 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import roomescape.controller.ReservationCreateReqDto;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationTime;
 
@@ -67,16 +67,16 @@ public class JdbcReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public Reservation create(final ReservationCreateReqDto reservationRequest) {
+    public Reservation create(final String name, final LocalDate date, final Long timeId) {
         String sql = "INSERT INTO reservation (name, date, time_id) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        Long timeId = validateTimeId(reservationRequest.timeId());
+        Long validatedTimeId = validateTimeId(timeId);
 
         jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[]{"id"});
-            preparedStatement.setString(1, reservationRequest.name());
-            preparedStatement.setDate(2, Date.valueOf(reservationRequest.date()));
-            preparedStatement.setLong(3, timeId);
+            preparedStatement.setString(1, name);
+            preparedStatement.setDate(2, Date.valueOf(date));
+            preparedStatement.setLong(3, validatedTimeId);
             return preparedStatement;
         }, keyHolder);
 
@@ -87,8 +87,8 @@ public class JdbcReservationRepository implements ReservationRepository {
 
         return new Reservation(
                 key.longValue(),
-                reservationRequest.name(),
-                reservationRequest.date(),
+                name,
+                date,
                 null
         );
     }

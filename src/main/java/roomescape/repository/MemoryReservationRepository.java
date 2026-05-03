@@ -1,9 +1,9 @@
 package roomescape.repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-import roomescape.controller.ReservationCreateReqDto;
 import roomescape.domain.Reservation;
 import roomescape.domain.ReservationTime;
 
@@ -36,13 +36,12 @@ public class MemoryReservationRepository implements ReservationRepository {
     }
 
     @Override
-    public Reservation create(ReservationCreateReqDto reservationRequest
-    ) {
+    public Reservation create(final String name, final LocalDate date, final Long timeId) {
         Reservation newReservation = new Reservation(
                 index.incrementAndGet(),
-                reservationRequest.name(),
-                reservationRequest.date(),
-                new ReservationTime(reservationRequest.timeId(), null)
+                name,
+                date,
+                new ReservationTime(timeId, null)
         );
         reservations.add(newReservation);
         return newReservation;
