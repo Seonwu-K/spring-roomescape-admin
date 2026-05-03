@@ -28,12 +28,12 @@ public class ReservationTimeController {
     public ResponseEntity<Void> create(@RequestBody final ReservationTimeCreateReqDto request) {
         jdbcReservationTimeRepository.create(request.startAt());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(201).build();
     }
 
     @DeleteMapping("/times/{id}")
     public ResponseEntity<Void> delete(@PathVariable final Long id) {
         jdbcReservationTimeRepository.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

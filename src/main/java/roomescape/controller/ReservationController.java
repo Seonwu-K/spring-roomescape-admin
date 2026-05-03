@@ -28,12 +28,12 @@ public class ReservationController {
     public ResponseEntity<Reservation> create(@RequestBody ReservationCreateReqDto reservationRequest) {
         Reservation newReservation = reservationRepository.create(reservationRequest);
         Reservation response = reservationRepository.findById(newReservation.getId());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(201).body(response);
     }
 
     @DeleteMapping("/reservations/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reservationRepository.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
