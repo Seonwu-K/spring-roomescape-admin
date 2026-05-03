@@ -52,4 +52,13 @@ public class JdbcReservationTimeRepository {
         String sql = "DELETE FROM reservation_time WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
+
+    public boolean existsById(final long id) {
+        Integer count = jdbcTemplate.queryForObject(
+                "SELECT count(1) FROM reservation_time WHERE id = ?",
+                Integer.class,
+                id
+        );
+        return count != null && count > 0;
+    }
 }

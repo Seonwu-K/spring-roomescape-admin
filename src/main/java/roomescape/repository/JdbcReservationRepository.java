@@ -70,13 +70,12 @@ public class JdbcReservationRepository implements ReservationRepository {
     public Reservation create(final String name, final LocalDate date, final Long timeId) {
         String sql = "INSERT INTO reservation (name, date, time_id) VALUES (?, ?, ?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        Long validatedTimeId = validateTimeId(timeId);
 
         jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[]{"id"});
             preparedStatement.setString(1, name);
             preparedStatement.setDate(2, Date.valueOf(date));
-            preparedStatement.setLong(3, validatedTimeId);
+            preparedStatement.setLong(3, timeId);
             return preparedStatement;
         }, keyHolder);
 
@@ -91,23 +90,6 @@ public class JdbcReservationRepository implements ReservationRepository {
                 date,
                 null
         );
-    }
-
-    private Long validateTimeId(final Long timeId) {
-        if (timeId == null) {
-            throw new IllegalArgumentException("[ERROR] 예약 시간 ID는 필수입니다.");
-        }
-
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT count(1) FROM reservation_time WHERE id = ?",
-                Integer.class,
-                timeId
-        );
-        if (count == null || count == 0) {
-            throw new IllegalArgumentException("[ERROR] 존재하지 않는 예약 시간입니다.");
-        }
-
-        return timeId;
     }
 
     private ReservationTime mapReservationTime(final ResultSet resultSet) throws SQLException {
