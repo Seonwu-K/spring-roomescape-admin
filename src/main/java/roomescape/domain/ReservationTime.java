@@ -14,10 +14,6 @@ public class ReservationTime {
         return startAt;
     }
 
-    public ReservationTime() {
-
-    }
-
     public ReservationTime(long id, LocalTime startAt) {
         this.id = id;
         this.startAt = startAt;
